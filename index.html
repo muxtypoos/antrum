@@ -57,6 +57,10 @@ button.pri{background:var(--teal);border-color:var(--teal);color:#fff;font-weigh
 .step{border-left:4px solid var(--teal2);padding-left:12px;margin-bottom:16px}
 .step .n{display:inline-block;background:var(--teal);color:#fff;font-weight:800;font-size:12px;letter-spacing:.06em;border-radius:99px;padding:2px 10px;margin-bottom:6px}
 .step.locked{opacity:.45}
+.checks{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:12px}
+.chk{display:flex;align-items:center;gap:9px;font-size:15px;font-weight:600;color:var(--tx);cursor:pointer;min-height:36px}
+.chk input{-webkit-appearance:checkbox;appearance:auto;width:26px;height:26px;min-height:0;padding:0;margin:0;border-radius:4px;accent-color:var(--teal2);flex:none}
+.chk input:disabled+span{opacity:.45}
 .prompt{margin-top:10px;padding:10px 12px;border-radius:10px;background:var(--card2);border:1px solid var(--bd);font-size:15px}
 .prompt.w{background:var(--wabg);color:var(--wat);border-color:transparent}
 .prompt b{color:inherit}
@@ -156,6 +160,7 @@ svg text{font-family:inherit}
     </div>
   </div>
   <div class="hint" id="ageHint">Age is needed to classify a CSA of 6&ndash;11&nbsp;cm&sup2; with the nomogram (below 6 is always safe, above 11 is always unsafe). Weight is optional for adults and adds a mL/kg safety check.</div>
+  <div class="checks"><label class="chk"><input type="checkbox" id="preg"><span>Pregnant &gt;28 weeks?</span></label><label class="chk"><input type="checkbox" id="bmi"><span>BMI &gt;40 kg/m&sup2;?</span></label></div>
   <div id="paedBar" hidden><button id="paedBtn" class="pink" type="button">Paediatric mode</button></div>
   <div id="ageWarn"></div>
   <div class="clinnote"><b>Gastric ultrasound alone should not decide induction technique.</b> Use it together with the clinical situation (fasting status, urgency, comorbidity and gastric-emptying risk factors, airway assessment) and your own clinical judgement.</div>
@@ -165,6 +170,7 @@ svg text{font-family:inherit}
 <!-- VISUAL REFERENCE -->
 <section class="card a-ref">
   <h2>Probe position &amp; target view</h2>
+  <div class="prompt w" id="pregNote" hidden><b>Pregnant mode:</b> do not scan flat. Scan semi-recumbent at 30&ndash;45&deg; with left uterine displacement or left tilt, and in RLD.</div>
   <div class="refgrid">
     <figure data-slot="probe">
       <svg viewBox="0 0 320 230" role="img" aria-label="Probe position: subxiphoid, sagittal, curvilinear probe, marker pointing cranial"><rect width="100%" height="100%" fill="#0a0a0a"/></svg>
@@ -283,11 +289,11 @@ svg text{font-family:inherit}
   </details>
   <details>
     <summary>Pregnancy</summary>
-    <ul class="t"><li>Use semi-recumbent or RLD; a slow deep breath held at end-expiration and slight manual displacement of the gravid uterus can help find the antrum.</li><li>The site currently recommends the Perlas volume model (the one used here) for pregnancy.</li></ul>
+    <ul class="t"><li>Third trimester: the gravid uterus displaces the stomach cephalad. Semi-recumbent positioning (30&ndash;45&deg; with left uterine displacement or left tilt) is often more practical than full RLD. Do not scan flat.</li><li>Use an antral CSA threshold of 9.6&nbsp;cm&sup2; (semi-recumbent) rather than the standard Perlas formula. Tick &ldquo;Pregnant &gt;28 weeks?&rdquo; to apply it.</li><li>A slow deep breath held at end-expiration and slight manual displacement of the gravid uterus can help find the antrum.</li></ul>
   </details>
   <details>
     <summary>Morbid obesity</summary>
-    <ul class="t"><li>The empty antrum can be identified in &ge;90% of severely obese patients, at an average depth of ~7&nbsp;cm.</li><li>The Perlas model has been validated in BMI &ge;40&nbsp;kg/m&sup2;. Obese patients have larger antral CSA and larger absolute fasting volume, but similar volume per kg.</li></ul>
+    <ul class="t"><li>BMI &gt;35: the antrum is found deeper, up to about 7&nbsp;cm, and is feasible to image in &gt;90% of patients with BMI &gt;40. Use the standard RLD position.</li><li>The Perlas formula is validated up to BMI 40 and is <b>not validated above this</b>: use qualitative assessment (grading) and clinical judgement. Tick &ldquo;BMI &gt;40&rdquo; for a reminder in the result.</li><li>Obese patients have larger antral CSA and larger absolute fasting volume, but similar volume per kg.</li></ul>
   </details>
   <details>
     <summary>Children (under 18 years)</summary>
@@ -514,6 +520,12 @@ function buildNomo(hotAge, hotCsa){
   $('nomoHint').innerHTML='Predicted gastric volume (mL) by RLD antral CSA and age. Volume = 27.0 + 14.6 &times; CSA &minus; 1.28 &times; age (non-pregnant adults, volumes up to 500&nbsp;mL). Negative values are shown as 0.';
   $('nomoLegend').innerHTML='<span><i style="background:#12453a"></i>&le; 100 mL and CSA &le; 11 cm&sup2;: SAFE</span><span><i style="background:#4a1d24"></i>CSA above 11 cm&sup2;: always UNSAFE</span><span><i style="background:var(--card2)"></i>Above 100 mL: UNSAFE</span><span><i style="outline:2px solid #fff;outline-offset:-2px"></i>Nearest cell</span>';
 }
+function buildNomoPreg(){
+  $('nomoWrap').innerHTML='<div class="prompt"><b>Pregnant &gt;28 weeks:</b> the adult nomogram is not used. Measure the antral CSA semi-recumbent (30&ndash;45&deg; with left uterine displacement or left tilt) and compare it with <b>9.6&nbsp;cm&sup2;</b>. Above 9.6&nbsp;cm&sup2; is always treated as high risk.</div>';
+  $('nomoTitle').textContent='Pregnancy (>28 weeks): CSA threshold';
+  $('nomoHint').innerHTML='';
+  $('nomoLegend').innerHTML='<span><i style="background:#12453a"></i>9.6 cm&sup2; or less: SAFE</span><span><i style="background:#4a1d24"></i>Above 9.6 cm&sup2;: UNSAFE</span>';
+}
 function buildNomoPaed(hotAge, hotCsa, wt){
   var hotC=isNaN(hotAge)?null:nearest(P_AGES,hotAge), hotR=isNaN(hotCsa)?null:nearest(P_CSAS,hotCsa);
   var lim=(!isNaN(wt)&&wt>0)?KG_LIMIT_PAED*wt:null;
@@ -550,7 +562,13 @@ function lockFrom(n){
   if(n<=3){ setStep('st3', false); $('csa').disabled=true; }
 }
 
-function evaluate(){
+function evaluate(){ evaluateCore(); bmiNote(); }
+function bmiNote(){
+  var r=document.getElementById('result');
+  if(!$('bmi').checked || paed || !r.querySelector('.banner')) return;
+  r.insertAdjacentHTML('beforeend','<div class="prompt w"><b>BMI &gt;40:</b> the Perlas formula is not validated above BMI 40. Rely on the qualitative assessment (grading) and clinical judgement.</div>');
+}
+function evaluateCore(){
   var age=num($('age').value), wt=num($('wt').value);
   var s1=$('s1').value, s2=$('s2').value, csa=num($('csa').value);
   var p1=$('p1'), p2=$('p2'), p3=$('p3'), res=$('result');
@@ -566,6 +584,10 @@ function evaluate(){
     ? 'Paediatric mode needs <b>both age and weight</b>. Age in years (decimals allowed, e.g. 1.5).'
     : 'Age is needed to classify a CSA of 6&ndash;11&nbsp;cm&sup2; with the nomogram (below 6 is always safe, above 11 is always unsafe). Weight is optional for adults and adds a mL/kg safety check.';
 
+  var pregnant = $('preg').checked && !paed;
+  $('preg').disabled=paed; $('bmi').disabled=paed;
+  $('pregNote').hidden=!pregnant;
+  if(pregnant) $('ageHint').innerHTML='Pregnant mode: age is not needed. The 9.6&nbsp;cm&sup2; threshold is used instead of the nomogram.';
   var aw='';
   if(!isNaN(age)){
     if(age<0 || age>110) aw='<div class="prompt w">Age looks out of range. Please check.</div>';
@@ -573,10 +595,10 @@ function evaluate(){
     else if(paed && age<0.92) aw='<div class="prompt w">Under 11 months: outside the age range the paediatric model was built on (11 months to 17 years).</div>';
     else if(!child && age>80) aw='<div class="prompt">Age above 80: the nomogram stops at 80. The age 80 column is used.</div>';
   }
-  if(isNaN(age) && !paed) aw='<div class="prompt w"><b>No age entered:</b> adult settings will be used.</div>';
+  if(isNaN(age) && !paed && !pregnant) aw='<div class="prompt w"><b>No age entered:</b> adult settings will be used.</div>';
   $('ageWarn').innerHTML=aw;
 
-  if(paed) buildNomoPaed(age, csa, wt); else buildNomo(age, csa);
+  if(paed) buildNomoPaed(age, csa, wt); else if(pregnant) buildNomoPreg(); else buildNomo(age, csa);
   markGrade(null);
 
   // STEP 1
@@ -674,6 +696,13 @@ function evaluate(){
     return;
   }
 
+  /* ---------- PREGNANT >28 weeks: CSA threshold 9.6 cm2 (semi-recumbent), no nomogram ---------- */
+  if(pregnant){
+    var pchip='<span class="chip a">Pregnant &gt;28 weeks</span>';
+    if(csa>9.6) res.innerHTML=banner('r','UNSAFE','Full stomach: high aspiration risk','Pregnancy >28 weeks: CSA '+csa+' cm&sup2; is above the 9.6 cm&sup2; threshold, which is always high risk.')+'<div class="facts">'+gradeChip+csaChip+pchip+'</div>';
+    else res.innerHTML=banner('g','SAFE','Empty stomach: low aspiration risk','Pregnancy >28 weeks: CSA '+csa+' cm&sup2; is at or below the 9.6 cm&sup2; threshold (semi-recumbent). The Perlas formula is not used.')+'<div class="facts">'+gradeChip+csaChip+pchip+'</div>';
+    return;
+  }
   /* ---------- ADULT: website nomogram (age + CSA), optional mL/kg check ---------- */
   var haveAge = !isNaN(age) && age>=18 && age<=110;
   if(!haveAge){
@@ -709,7 +738,7 @@ function evaluate(){
 }
 
 /* ---- wiring ---- */
-['age','wt','s1','s2','csa'].forEach(function(id){
+['age','wt','s1','s2','csa','preg','bmi'].forEach(function(id){
   $(id).addEventListener('input', evaluate);
   $(id).addEventListener('change', evaluate);
 });
@@ -718,6 +747,7 @@ $('s2').addEventListener('change', function(){ $('csa').value=''; evaluate(); })
 $('paedBtn').addEventListener('click', function(){ paed=!paed; evaluate(); });
 $('reset').addEventListener('click', function(){
   ['age','wt','s1','s2','csa'].forEach(function(id){ $(id).value=''; });
+  $('preg').checked=false; $('bmi').checked=false;
   paed=false; evaluate(); window.scrollTo({top:0,behavior:'smooth'});
 });
 evaluate();
