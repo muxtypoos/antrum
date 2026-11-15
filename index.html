@@ -170,7 +170,7 @@ svg text{font-family:inherit}
 <!-- VISUAL REFERENCE -->
 <section class="card a-ref">
   <h2>Probe position &amp; target view</h2>
-  <div class="prompt w" id="pregNote" hidden><b>Pregnant mode:</b> do not scan flat. Scan semi-recumbent at 30&ndash;45&deg; with left uterine displacement or left tilt, and in RLD.</div>
+  <div class="prompt w" id="pregNote" hidden><b>Do not scan flat.</b> Scan semi-recumbent at 30&ndash;45&deg; with left uterine displacement or left tilt, and in RLD.</div>
   <div class="refgrid">
     <figure data-slot="probe">
       <svg viewBox="0 0 320 230" role="img" aria-label="Probe position: subxiphoid, sagittal, curvilinear probe, marker pointing cranial"><rect width="100%" height="100%" fill="#0a0a0a"/></svg>
@@ -235,6 +235,7 @@ svg text{font-family:inherit}
   <div class="hint" style="margin:0 0 8px" id="nomoHint"></div>
   <div id="nomoWrap"></div>
   <div class="legend" id="nomoLegend"></div>
+  <div class="prompt w" id="bmiNote" hidden><b>BMI &gt;40:</b> the volume estimate is not validated at this BMI, so rely on the qualitative classification (grade) rather than volumetric estimation. If image quality is poor, try a sitting or semi-recumbent position and increase the depth setting.</div>
 </section>
 
 <!-- GRADING -->
@@ -507,18 +508,18 @@ function buildNomo(hotAge, hotCsa){
   CSAS.forEach(function(c){
     h+='<tr'+(c===hotR?' class="hotrow"':'')+'><td class="rl">'+c+'</td>';
     AGES.forEach(function(a){
-      var v=NOMO[c][AGES.indexOf(a)], cls=(v<=VOL_LIMIT_ML && c<=11)?'g':(c>11?'r':'');
+      var v=NOMO[c][AGES.indexOf(a)], cls=(v<=VOL_LIMIT_ML)?'g':'';
       if(a===hotC && c===hotR) cls+=' hot';
       h+='<td class="'+cls+'">'+v+'</td>';
     });
     h+='</tr>';
   });
-  h+='</tbody></table></div><div class="hint">Column header = age (years). Cells = estimated volume (mL). CSA above 11 cm&sup2; is always treated as unsafe, so the row for 12 cm&sup2; at age 80 (100 mL) is shown red.</div>';
+  h+='</tbody></table></div><div class="hint">Column header = age (years). Cells = estimated volume (mL). CSA above 11 cm&sup2; is always treated as unsafe.</div>';
   $('nomoWrap').innerHTML=h;
   var sc=$('nomoWrap').querySelector('.nomoscroll'), hr=sc&&sc.querySelector('tr.hotrow'); if(sc&&hr) sc.scrollTop=Math.max(0,hr.offsetTop-sc.clientHeight/2+hr.offsetHeight/2);
   $('nomoTitle').textContent='Gastric volume nomogram (adult)';
   $('nomoHint').innerHTML='Predicted gastric volume (mL) by RLD antral CSA and age. Volume = 27.0 + 14.6 &times; CSA &minus; 1.28 &times; age (non-pregnant adults, volumes up to 500&nbsp;mL). Negative values are shown as 0.';
-  $('nomoLegend').innerHTML='<span><i style="background:#12453a"></i>&le; 100 mL and CSA &le; 11 cm&sup2;: SAFE</span><span><i style="background:#4a1d24"></i>CSA above 11 cm&sup2;: always UNSAFE</span><span><i style="background:var(--card2)"></i>Above 100 mL: UNSAFE</span><span><i style="outline:2px solid #fff;outline-offset:-2px"></i>Nearest cell</span>';
+  $('nomoLegend').innerHTML='<span><i style="background:#12453a"></i>100 mL or less</span><span><i style="background:var(--card2)"></i>Above 100 mL</span><span><i style="outline:2px solid #fff;outline-offset:-2px"></i>Nearest cell</span>';
 }
 function buildNomoPreg(){
   $('nomoWrap').innerHTML='<div class="prompt"><b>Pregnant &gt;28 weeks:</b> the adult nomogram is not used. Measure the antral CSA semi-recumbent (30&ndash;45&deg; with left uterine displacement or left tilt) and compare it with <b>9.6&nbsp;cm&sup2;</b>. Above 9.6&nbsp;cm&sup2; is always treated as high risk.</div>';
@@ -562,12 +563,7 @@ function lockFrom(n){
   if(n<=3){ setStep('st3', false); $('csa').disabled=true; }
 }
 
-function evaluate(){ evaluateCore(); bmiNote(); }
-function bmiNote(){
-  var r=document.getElementById('result');
-  if(!$('bmi').checked || paed || !r.querySelector('.banner')) return;
-  r.insertAdjacentHTML('beforeend','<div class="prompt w"><b>BMI &gt;40:</b> the Perlas formula is not validated above BMI 40. Rely on the qualitative assessment (grading) and clinical judgement.</div>');
-}
+function evaluate(){ evaluateCore(); $('bmiNote').hidden=!($('bmi').checked && !paed); }
 function evaluateCore(){
   var age=num($('age').value), wt=num($('wt').value);
   var s1=$('s1').value, s2=$('s2').value, csa=num($('csa').value);
