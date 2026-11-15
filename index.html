@@ -519,7 +519,7 @@ function buildNomo(hotAge, hotCsa){
   var sc=$('nomoWrap').querySelector('.nomoscroll'), hr=sc&&sc.querySelector('tr.hotrow'); if(sc&&hr) sc.scrollTop=Math.max(0,hr.offsetTop-sc.clientHeight/2+hr.offsetHeight/2);
   $('nomoTitle').textContent='Gastric volume nomogram (adult)';
   $('nomoHint').innerHTML='Predicted gastric volume (mL) by RLD antral CSA and age. Volume = 27.0 + 14.6 &times; CSA &minus; 1.28 &times; age (non-pregnant adults, volumes up to 500&nbsp;mL). Negative values are shown as 0.';
-  $('nomoLegend').innerHTML='<span><i style="background:#12453a"></i>100 mL or less</span><span><i style="background:var(--card2)"></i>Above 100 mL</span><span><i style="outline:2px solid #fff;outline-offset:-2px"></i>Nearest cell</span>';
+  $('nomoLegend').innerHTML='<span><i style="background:#12453a"></i>&le; 100 mL: SAFE</span><span><i style="background:var(--card2)"></i>&gt; 100 mL: UNSAFE</span><span><i style="outline:2px solid #fff;outline-offset:-2px"></i>Nearest cell</span>';
 }
 function buildNomoPreg(){
   $('nomoWrap').innerHTML='<div class="prompt"><b>Pregnant &gt;28 weeks:</b> the adult nomogram is not used. Measure the antral CSA semi-recumbent (30&ndash;45&deg; with left uterine displacement or left tilt) and compare it with <b>9.6&nbsp;cm&sup2;</b>. Above 9.6&nbsp;cm&sup2; is always treated as high risk.</div>';
