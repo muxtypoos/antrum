@@ -166,75 +166,12 @@ svg text{font-family:inherit}
   <h2>Probe position &amp; target view</h2>
   <div class="refgrid">
     <figure data-slot="probe">
-      <svg viewBox="0 0 320 230" role="img" aria-label="Probe position: subxiphoid, sagittal, curvilinear probe, marker pointing cranial">
-        <rect width="320" height="230" fill="#0a0a0a"/>
-        <!-- bed -->
-        <rect x="8" y="196" width="304" height="8" rx="3" fill="#2b3743"/>
-        <!-- patient, supine, head at left -->
-        <circle cx="42" cy="170" r="24" fill="#33414e" stroke="#5d6b78" stroke-width="1.5"/>
-        <path d="M64 176 C80 150 110 138 140 138 C190 138 240 144 300 160 L300 196 L64 196 Z" fill="#33414e" stroke="#5d6b78" stroke-width="1.5"/>
-        <!-- xiphoid -->
-        <circle cx="118" cy="140" r="3.5" fill="#f2c35b"/>
-        <text x="62" y="132" fill="#f2c35b" font-size="11">Xiphoid</text>
-        <!-- beam fan -->
-        <path d="M150 128 L112 196 L190 196 Z" fill="#26c6a6" opacity=".25"/>
-        <path d="M150 128 L112 196 M150 128 L190 196" stroke="#26c6a6" stroke-width="1.2" stroke-dasharray="4 3"/>
-        <!-- probe -->
-        <rect x="136" y="70" width="28" height="56" rx="6" fill="#d8dee3" stroke="#fff" stroke-width="1.5"/>
-        <rect x="132" y="122" width="36" height="8" rx="3" fill="#8fa0ad"/>
-        <path d="M150 70 C150 50 170 46 184 40" stroke="#8fa0ad" stroke-width="4" fill="none" stroke-linecap="round"/>
-        <!-- marker -->
-        <circle cx="139" cy="84" r="4.5" fill="#26c6a6"/>
-        <path d="M130 84 H84" stroke="#26c6a6" stroke-width="2.5"/><path d="M84 84 l9 -5 v10 z" fill="#26c6a6"/>
-        <text x="20" y="56" fill="#26c6a6" font-size="12" font-weight="700">Marker &rarr; cranial</text>
-        <text x="20" y="71" fill="#26c6a6" font-size="10.5">(towards head)</text>
-        <!-- orientation -->
-        <text x="12" y="222" fill="#97a5b2" font-size="11">&#9664; Cranial</text>
-        <text x="262" y="222" fill="#97a5b2" font-size="11">Caudal &#9654;</text>
-        <text x="190" y="62" fill="#e8eef3" font-size="11.5" font-weight="700">Curvilinear 2&ndash;5 MHz</text>
-        <text x="196" y="78" fill="#97a5b2" font-size="10.5">Subxiphoid, sagittal</text>
-      </svg>
+      <svg viewBox="0 0 320 230" role="img" aria-label="Probe position: subxiphoid, sagittal, curvilinear probe, marker pointing cranial"><rect width="100%" height="100%" fill="#0a0a0a"/></svg>
       <figcaption><span class="cap-strong">Probe position.</span> Abdominal settings. Scan the epigastrium in the sagittal plane, marker towards the head, sweeping from the left subcostal margin to the right to find the antrum. Curvilinear 2&ndash;5&nbsp;MHz for adults and children over 30&nbsp;kg; linear 5&ndash;12&nbsp;MHz for children under 30&nbsp;kg. Scan supine first, then right lateral decubitus (RLD). Never judge a stomach empty from the supine view alone.</figcaption>
     </figure>
 
     <figure data-slot="view">
-      <svg viewBox="0 0 320 250" role="img" aria-label="Schematic ultrasound: gastric antrum between liver and aorta">
-        <rect width="320" height="250" fill="#0a0a0a"/>
-        <defs><clipPath id="fan"><path d="M112 14 H208 L312 232 Q160 252 8 232 Z"/></clipPath></defs>
-        <path d="M112 14 H208 L312 232 Q160 252 8 232 Z" fill="#141414" stroke="#26c6a6" stroke-width="1.2"/>
-        <g clip-path="url(#fan)">
-          <!-- skin/muscle band -->
-          <rect x="0" y="14" width="320" height="22" fill="#4a4a4a"/>
-          <!-- liver (left = cranial) -->
-          <path d="M0 36 H170 C150 60 120 84 96 112 C70 140 40 150 0 154 Z" fill="#6e6e6e"/>
-          <!-- antrum (target) -->
-          <ellipse cx="190" cy="82" rx="46" ry="28" fill="#3d3d3d" stroke="#c8c8c8" stroke-width="3"/>
-          <ellipse cx="190" cy="82" rx="30" ry="16" fill="#1c1c1c" stroke="#8a8a8a" stroke-width="1.5"/>
-          <ellipse cx="190" cy="82" rx="12" ry="5" fill="#d8d8d8"/>
-          <!-- pancreas -->
-          <path d="M120 128 C150 112 215 116 262 128 C268 140 240 150 196 148 C150 148 124 144 120 128 Z" fill="#7d7d7d"/>
-          <!-- SMA -->
-          <circle cx="238" cy="150" r="7" fill="#050505" stroke="#d8d8d8" stroke-width="2"/>
-          <!-- aorta -->
-          <circle cx="168" cy="178" r="17" fill="#050505" stroke="#e0e0e0" stroke-width="3"/>
-          <!-- spine -->
-          <path d="M60 232 Q168 206 276 232" stroke="#e8e8e8" stroke-width="5" fill="none"/>
-        </g>
-        <!-- labels -->
-        <g font-size="12" font-weight="700" fill="#fff">
-          <text x="8" y="58" fill="#cfd8de">LIVER</text><text x="8" y="72" fill="#cfd8de" font-size="10" font-weight="500">(edge)</text>
-          <text x="236" y="52" fill="#26c6a6">ANTRUM</text>
-          <text x="152" y="136" fill="#111" font-size="11" font-weight="700">Pancreas</text>
-          <text x="224" y="176" fill="#cfd8de" font-size="11">SMA</text>
-          <text x="100" y="184" fill="#f2c35b">AORTA</text>
-        </g>
-        <path d="M236 54 L218 70" stroke="#26c6a6" stroke-width="1.5"/>
-        <path d="M56 62 L96 74" stroke="#cfd8de" stroke-width="1"/>
-        <path d="M238 168 L238 158" stroke="#cfd8de" stroke-width="1"/>
-        <text x="6" y="12" fill="#97a5b2" font-size="10">&#9664; CRANIAL</text>
-        <text x="258" y="12" fill="#97a5b2" font-size="10">CAUDAL &#9654;</text>
-        <circle cx="116" cy="22" r="4" fill="#26c6a6"/>
-      </svg>
+      <svg viewBox="0 0 320 250" role="img" aria-label="Schematic ultrasound: gastric antrum between liver and aorta"><rect width="100%" height="100%" fill="#0a0a0a"/></svg>
       <figcaption><span class="cap-strong">Target view (empty stomach).</span> Ultrasound image (left) and labelled schematic (right). Cephalad is to the left of the screen. <b>A</b> antrum, <b>L</b> liver, <b>P</b> pancreas, <b>Ao</b> aorta, <b>Sma</b> superior mesenteric artery. Image the antrum at rest, between peristaltic contractions.</figcaption>
     </figure>
   </div>
@@ -356,75 +293,31 @@ svg text{font-family:inherit}
   <div class="collage">
     <div class="tile">
       <figure data-slot="fasted">
-        <svg viewBox="0 0 200 150" role="img" aria-label="Fasted (Empty): Grade 0">
-          <rect width="200" height="150" fill="#0a0a0a"/>
-          <rect x="0" y="0" width="200" height="14" fill="#3a3a3a"/>
-          <ellipse cx="100" cy="72" rx="58" ry="36" fill="#454545" stroke="#c4c4c4" stroke-width="3"/>
-          <ellipse cx="100" cy="72" rx="30" ry="14" fill="#262626"/>
-          <ellipse cx="100" cy="72" rx="14" ry="4.5" fill="#e0e0e0"/>
-        </svg>
+        <svg viewBox="0 0 200 150" role="img" aria-label="Fasted (Empty): Grade 0"><rect width="100%" height="100%" fill="#0a0a0a"/></svg>
       </figure>
       <b>Empty stomach (Fasted, Grade 0)</b><span>With no significant content in the antrum in either position (supine and RLD), the antrum is Grade 0. It looks either flat and collapsed, or rounded to oval with a &ldquo;bull&rsquo;s eye&rdquo; (target) appearance.</span>
     </div>
     <div class="tile">
       <figure data-slot="solidEarly">
-        <svg viewBox="0 0 200 150" role="img" aria-label="Solid Food: early stage (frosted glass)">
-          <rect width="200" height="150" fill="#0a0a0a"/>
-          <rect x="0" y="0" width="200" height="14" fill="#3a3a3a"/>
-          <ellipse cx="100" cy="64" rx="62" ry="40" fill="#8e8e8e" stroke="#e0e0e0" stroke-width="3"/>
-          <g>
-            <circle cx="70" cy="56" r="4" fill="#d8d8d8"/><circle cx="92" cy="72" r="5" fill="#5a5a5a"/>
-            <circle cx="112" cy="52" r="5" fill="#e6e6e6"/><circle cx="128" cy="70" r="4" fill="#5a5a5a"/>
-            <circle cx="82" cy="84" r="3.5" fill="#e6e6e6"/><circle cx="104" cy="88" r="4" fill="#bdbdbd"/>
-            <circle cx="60" cy="72" r="3" fill="#5a5a5a"/><circle cx="136" cy="54" r="3" fill="#d8d8d8"/>
-          </g>
-          <path d="M50 104 L150 104 L168 148 L32 148 Z" fill="#050505" opacity=".85"/>
-        </svg>
+        <svg viewBox="0 0 200 150" role="img" aria-label="Solid Food: early stage (frosted glass)"><rect width="100%" height="100%" fill="#0a0a0a"/></svg>
       </figure>
       <b>Solid, early stage (&ldquo;frosted glass&rdquo;)</b><span>The antrum is distended with thin walls and the content is bright or mixed in echogenicity. The &ldquo;frosted glass&rdquo; look, usually soon after a solid meal, comes from air mixed with food along the anterior wall, which blurs the posterior wall and deeper structures.</span>
     </div>
     <div class="tile">
       <figure data-slot="solidLate">
-        <svg viewBox="0 0 200 150" role="img" aria-label="Solid Food: late stage">
-          <rect width="200" height="150" fill="#0a0a0a"/>
-          <rect x="0" y="0" width="200" height="14" fill="#3a3a3a"/>
-          <ellipse cx="100" cy="64" rx="62" ry="40" fill="#8e8e8e" stroke="#e0e0e0" stroke-width="3"/>
-          <g>
-            <circle cx="70" cy="56" r="4" fill="#d8d8d8"/><circle cx="92" cy="72" r="5" fill="#5a5a5a"/>
-            <circle cx="112" cy="52" r="5" fill="#e6e6e6"/><circle cx="128" cy="70" r="4" fill="#5a5a5a"/>
-            <circle cx="82" cy="84" r="3.5" fill="#e6e6e6"/><circle cx="104" cy="88" r="4" fill="#bdbdbd"/>
-            <circle cx="60" cy="72" r="3" fill="#5a5a5a"/><circle cx="136" cy="54" r="3" fill="#d8d8d8"/>
-          </g>
-          <path d="M50 104 L150 104 L168 148 L32 148 Z" fill="#050505" opacity=".85"/>
-        </svg>
+        <svg viewBox="0 0 200 150" role="img" aria-label="Solid Food: late stage"><rect width="100%" height="100%" fill="#0a0a0a"/></svg>
       </figure>
       <b>Solid, late stage</b><span>Content is heterogeneous and particulate, usually 1&ndash;2 hours after a solid meal. Uniform bright content suggests dairy or particulate fluids, and milk curds can look biphasic (bright and dark areas).</span>
     </div>
     <div class="tile">
       <figure data-slot="liquid">
-        <svg viewBox="0 0 200 150" role="img" aria-label="Pure Liquid">
-          <rect width="200" height="150" fill="#0a0a0a"/>
-          <rect x="0" y="0" width="200" height="14" fill="#3a3a3a"/>
-          <ellipse cx="100" cy="70" rx="62" ry="40" fill="#030303" stroke="#c4c4c4" stroke-width="2.5"/>
-          <rect x="40" y="112" width="120" height="30" fill="#1b1b1b" opacity=".9"/>
-        </svg>
+        <svg viewBox="0 0 200 150" role="img" aria-label="Pure Liquid"><rect width="100%" height="100%" fill="#0a0a0a"/></svg>
       </figure>
       <b>Clear fluid (pure liquid)</b><span>The antrum is round and distended with thin walls, and its contents are anechoic or hypoechoic. Antral size follows gastric volume and looks larger in RLD than supine. A volume assessment can tell baseline secretions from a larger, non-fasting volume.</span>
     </div>
     <div class="tile">
       <figure data-slot="starry">
-        <svg viewBox="0 0 200 150" role="img" aria-label="Starry Sky (Starry Night, Water/Air Mix)">
-          <rect width="200" height="150" fill="#0a0a0a"/>
-          <rect x="0" y="0" width="200" height="14" fill="#3a3a3a"/>
-          <ellipse cx="100" cy="70" rx="62" ry="40" fill="#030303" stroke="#c4c4c4" stroke-width="2.5"/>
-          <g fill="#f4f4f4">
-            <circle cx="70" cy="58" r="1.8"/><circle cx="84" cy="74" r="1.4"/><circle cx="96" cy="52" r="2"/>
-            <circle cx="108" cy="68" r="1.5"/><circle cx="120" cy="56" r="1.8"/><circle cx="130" cy="80" r="1.3"/>
-            <circle cx="78" cy="86" r="1.6"/><circle cx="100" cy="88" r="1.8"/><circle cx="116" cy="90" r="1.3"/>
-            <circle cx="62" cy="72" r="1.2"/><circle cx="140" cy="66" r="1.5"/><circle cx="90" cy="64" r="1.2"/>
-            <circle cx="124" cy="44" r="1.3"/><circle cx="72" cy="46" r="1.2"/>
-          </g>
-        </svg>
+        <svg viewBox="0 0 200 150" role="img" aria-label="Starry Sky (Starry Night, Water/Air Mix)"><rect width="100%" height="100%" fill="#0a0a0a"/></svg>
       </figure>
       <b>Fluid with air bubbles (&ldquo;starry night&rdquo;)</b><span>Many air bubbles sit on a hypoechoic background, usually seen soon after drinking clear or effervescent fluids. As with clear fluid, a volume assessment can separate baseline secretions from a non-fasting volume.</span>
     </div>
