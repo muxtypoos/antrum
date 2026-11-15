@@ -98,10 +98,11 @@ figure img.slot.zin.drag{transition:none;cursor:grabbing}
 .tile b{display:block;margin-top:8px;font-size:15px}
 .tile span{display:block;font-size:13px;color:var(--mu);line-height:1.4;margin-top:2px}
 
-table.nomo{width:100%;border-collapse:collapse;font-size:14px;text-align:center}
+div.nomoscroll{max-height:440px;overflow-y:auto;border:1px solid var(--bd);border-radius:8px}
+table.nomo{width:100%;border-collapse:separate;border-spacing:0;font-size:14px;text-align:center}
 @media(min-width:900px){table.nomo{font-size:12px}table.nomo th{font-size:12px}}
-table.nomo th{background:var(--teal);color:#fff;padding:6px 2px;font-size:13px}
-table.nomo td{padding:6px 2px;border:1px solid var(--bd);color:var(--mu)}
+table.nomo th{position:sticky;top:0;z-index:2;background:var(--teal);color:#fff;padding:6px 2px;font-size:13px}
+table.nomo td{padding:6px 2px;border-right:1px solid var(--bd);border-bottom:1px solid var(--bd);color:var(--mu)}
 table.nomo td.rl{color:var(--tx);font-weight:700;background:var(--card2)}
 table.nomo td.g{background:#12453a;color:#c8f5e8;font-weight:700}
 table.nomo td.hot{outline:3px solid #fff;outline-offset:-3px;position:relative;z-index:1}
@@ -368,16 +369,14 @@ IMAGES.view = IMAGES.fasted;   // empty-stomach view doubles as the target view
 /* ==========================================================================
    NOMOGRAM DATA (Perlas model, gastricultrasound.org Gastric Volume Assessment)
    Volume (mL) = 27.0 + 14.6*CSA - 1.28*age  -> table values, floored at 0.
-   Teal cells in the published nomogram = predicted volume < 100 mL.
+   Green cells in the published nomogram = estimated volume <= 100 mL.
    ========================================================================== */
-var VOL_LIMIT_ML = 100;          // nomogram safe/unsafe boundary (rounded volume < 100 = safe)
+var VOL_LIMIT_ML = 100;          // nomogram boundary: green (<= 100 mL) cells; CSA above 11 is always unsafe regardless
 var KG_LIMIT = 1.5;              // mL/kg full-stomach threshold (website)
 var AGES = [20,30,40,50,60,70,80];
-var CSAS = [2,3,4,5,6,7,8,9,10,11,12];
-/* Published table values (mL), rows = CSA 2..12, cols = age 20..80 */
-var NOMO = {2:[31,18,5,0,0,0,0],3:[45,32,20,7,0,0,0],4:[60,47,34,21,9,0,0],5:[74,62,49,36,23,10,0],
-6:[89,76,63,51,38,25,12],7:[103,91,78,65,52,40,27],8:[118,105,93,80,67,54,41],9:[133,120,107,94,82,69,56],
-10:[147,135,122,109,96,83,71],11:[162,149,136,123,111,98,85],12:[177,164,151,138,125,113,100]};
+var CSAS = [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
+/* Published table values (mL), rows = CSA 2..30, cols = age 20..80 */
+var NOMO = {2:[31,18,5,0,0,0,0],3:[45,32,20,7,0,0,0],4:[60,47,34,21,9,0,0],5:[74,62,49,36,23,10,0],6:[89,76,63,51,38,25,12],7:[103,91,78,65,52,40,27],8:[118,105,93,80,67,54,41],9:[133,120,107,94,82,69,56],10:[147,135,122,109,96,83,71],11:[162,149,136,123,111,98,85],12:[177,164,151,138,125,113,100],13:[191,178,165,153,140,127,114],14:[206,193,180,167,155,142,129],15:[220,207,194,182,169,156,143],16:[235,222,209,200,184,171,158],17:[249,236,224,211,198,185,173],18:[264,251,239,226,213,200,187],19:[278,266,253,240,227,214,202],20:[293,281,268,255,242,229,217],21:[307,295,282,269,256,244,231],22:[323,310,297,284,271,259,246],23:[337,324,311,298,285,273,260],24:[352,339,326,313,301,288,275],25:[366,353,340,327,315,302,289],26:[381,368,355,343,330,317,304],27:[395,382,369,357,344,331,318],28:[410,397,385,372,359,346,333],29:[424,411,398,386,373,360,347],30:[439,427,414,401,388,375,363]};
 function vol(csa, age){ return 27.0 + 14.6*csa - 1.28*age; }
 function volShown(csa, age){ return Math.max(0, Math.round(vol(csa, age))); }
 
@@ -496,23 +495,24 @@ setupImages();
 function nearest(arr, v){ return arr.reduce(function(b,a){ return Math.abs(a-v)<Math.abs(b-v)?a:b; }); }
 function buildNomo(hotAge, hotCsa){
   var hotC=isNaN(hotAge)?null:nearest(AGES,hotAge), hotR=isNaN(hotCsa)?null:nearest(CSAS,hotCsa);
-  var h='<table class="nomo"><thead><tr><th>CSA<br>(cm&sup2;)</th>';
+  var h='<div class="nomoscroll"><table class="nomo"><thead><tr><th>CSA<br>(cm&sup2;)</th>';
   AGES.forEach(function(a){ h+='<th'+(a===hotC?' class="hotcol"':'')+'>'+a+'</th>'; });
   h+='</tr></thead><tbody>';
   CSAS.forEach(function(c){
     h+='<tr'+(c===hotR?' class="hotrow"':'')+'><td class="rl">'+c+'</td>';
     AGES.forEach(function(a){
-      var v=NOMO[c][AGES.indexOf(a)], cls=(v<VOL_LIMIT_ML)?'g':'';
+      var v=NOMO[c][AGES.indexOf(a)], cls=(v<=VOL_LIMIT_ML && c<=11)?'g':(c>11?'r':'');
       if(a===hotC && c===hotR) cls+=' hot';
       h+='<td class="'+cls+'">'+v+'</td>';
     });
     h+='</tr>';
   });
-  h+='</tbody></table><div class="hint">Column header = age (years). Cells = predicted volume (mL).</div>';
+  h+='</tbody></table></div><div class="hint">Column header = age (years). Cells = estimated volume (mL). CSA above 11 cm&sup2; is always treated as unsafe, so the row for 12 cm&sup2; at age 80 (100 mL) is shown red.</div>';
   $('nomoWrap').innerHTML=h;
+  var sc=$('nomoWrap').querySelector('.nomoscroll'), hr=sc&&sc.querySelector('tr.hotrow'); if(sc&&hr) sc.scrollTop=Math.max(0,hr.offsetTop-sc.clientHeight/2+hr.offsetHeight/2);
   $('nomoTitle').textContent='Gastric volume nomogram (adult)';
   $('nomoHint').innerHTML='Predicted gastric volume (mL) by RLD antral CSA and age. Volume = 27.0 + 14.6 &times; CSA &minus; 1.28 &times; age (non-pregnant adults, volumes up to 500&nbsp;mL). Negative values are shown as 0.';
-  $('nomoLegend').innerHTML='<span><i style="background:#12453a"></i>&lt; 100 mL: SAFE</span><span><i style="background:var(--card2)"></i>&ge; 100 mL: UNSAFE</span><span><i style="outline:2px solid #fff;outline-offset:-2px"></i>Nearest cell</span>';
+  $('nomoLegend').innerHTML='<span><i style="background:#12453a"></i>&le; 100 mL and CSA &le; 11 cm&sup2;: SAFE</span><span><i style="background:#4a1d24"></i>CSA above 11 cm&sup2;: always UNSAFE</span><span><i style="background:var(--card2)"></i>Above 100 mL: UNSAFE</span><span><i style="outline:2px solid #fff;outline-offset:-2px"></i>Nearest cell</span>';
 }
 function buildNomoPaed(hotAge, hotCsa, wt){
   var hotC=isNaN(hotAge)?null:nearest(P_AGES,hotAge), hotR=isNaN(hotCsa)?null:nearest(P_CSAS,hotCsa);
@@ -689,8 +689,8 @@ function evaluate(){
   }
   var ageU=Math.min(age,80);
   var raw=vol(csa,ageU), vv=Math.max(0,Math.round(raw));
-  var green = vv<VOL_LIMIT_ML && csa<=11;
-  var why='CSA '+csa+' cm&sup2; at age '+age+': nomogram predicts ~'+vv+' mL ('+(vv<VOL_LIMIT_ML?'below':'at or above')+' the 100 mL boundary).';
+  var green = vv<=VOL_LIMIT_ML && csa<=11;
+  var why='CSA '+csa+' cm&sup2; at age '+age+': nomogram predicts ~'+vv+' mL ('+(vv<=VOL_LIMIT_ML?'at or below':'above')+' the 100 mL boundary).';
   if(age>80) why+=' Age above 80: the nomogram stops at 80, so the age 80 column is used.';
   if(csa>11) why='CSA above 11 cm&sup2; is always unsafe, whatever the age.';
   var vchip='<span class="chip">~'+vv+' mL</span>';
