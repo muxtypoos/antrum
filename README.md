@@ -15,3 +15,9 @@ This tool supports, and does not replace, clinical judgement. Gastric ultrasound
 
 ## Credit
 Independently developed but adapted from [gastricultrasound.org](https://www.gastricultrasound.org/en/home/) and the research of Perlas, Van de Putte, Arzola and colleagues.
+
+## Licence
+
+© 2026 Dr George Lui. Free to use and share under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/): credit the author, no commercial use without permission, and share any adaptations under the same licence. See [`LICENSE`](LICENSE).
+
+Not covered (third-party, owners' own terms): ultrasound images and the descriptions adapted from gastricultrasound.org (Perlas and colleagues); the published adult and paediatric nomogram values and equations.
